@@ -27,14 +27,14 @@ def neuekuss_gradient(S1, S2, k0, phi_start, phi_end, tG, tD, t0):
     beta = (phi_end - phi_start) / tG
     k_start = neuekuss_isocratic(S1, S2, k0, phi_start)
     phi_elution = (
-        (phi_start + (1 + S2 * phi_start)/S1 *
+        ((1 + S2 * phi_start)**2/S1 *
          np.log(1 + beta * k0 * S1 * (t0 - tD/k_start) *
                 np.exp((-S1 * phi_start)/(1 + S2*phi_start)))) /
         (1 - (S2 * (1 + S2 * phi_start))/S1 *
          np.log(1 + beta * k0 * S1 * (t0 - tD/k_start) *
                 np.exp((-S1 * phi_start)/(1 + S2*phi_start))))
     )
-    return tD/t0 + (phi_elution - phi_start) / (beta*t0)
+    return tD/t0 + phi_elution / (beta*t0)
 
 def nelder_mead(f, x_start,
                 step=0.1, no_improve_thr=10e-6,

@@ -3,6 +3,7 @@ import tensorflow as tf
 import glob
 import shutil
 import collections
+from pathlib import Path
 
 from definitions import OUTPUT_DIR, WEIGHTS_DIR, LOGS_DIR
 
@@ -31,7 +32,9 @@ class AgentMixin:
 
     def save_weights(self, path=None):
         if path is None:
-            self.model.save_weights(WEIGHTS_DIR+"{}.h5".format(self.name))
+            wdir = Path(WEIGHTS_DIR)
+            wdir.mkdir(exist_ok=True)
+            self.model.save_weights("{}/{}.h5".format(wdir, self.name))
         else:
             self.model.save_weights(path)
 
